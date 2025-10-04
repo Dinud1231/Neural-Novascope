@@ -1,0 +1,72 @@
+import pandas as pd
+koi_df[numeric_cols] = koi_df[numeric_cols].fillna(0)
+
+
+# -------------------------
+# Step 2: Process FITS Light Curves
+# -------------------------
+fits_folder = "data/lightcurves/"
+flux_features = []
+
+
+for file in tqdm(os.listdir(fits_folder), desc="Processing FITS"):
+    if file.endswith(".fits"):
+        try:
+            lc = lk.read(os.path.join(fits_folder, file))
+            lc = lc.remove_nans().normalize().flatten(window_length=401)
+
+
+            flux_mean = np.mean(lc.flux)
+            flux_std = np.std(lc.flux)
+            flux_min = np.min(lc.flux)
+            flux_max = np.max(lc.flux)
+
+
+            kic_id = int(file.split('-')[0][4:])
+            flux_features.append({
+                'kepid': kic_id,
+                'flux_mean': flux_mean,
+                'flux_std': flux_std,
+                'flux_min': flux_min,
+                'flux_max': flux_max
+                })
+            except Exception as e:
+                print(f"Error reading {file}: {e}")
+
+
+flux_df = pd.DataFrame(flux_features)
+
+
+# -------------------------
+# Step 3: Merge CSV and FITS Features
+# -------------------------
+merged_df = pd.merge(koi_df, flux_df, on='kepid', how='inner')
+
+
+# Feature Engineering
+merged_df['radius_ratio'] = merged_df['koi_prad'] / merged_df['koi_srad']
+merged_df['duration_ratio'] = merged_df['koi_duration'] / merged_df['koi_period']
+merged_df['flux_range'] = merged_df['flux_max'] - merged_df['flux_min']
+merged_df['flux_std_norm'] = merged_df['flux_std'] / merged_df['flux_mean']
+
+
+# Select features and labels
+feature_cols = ['koi_period','koi_depth','koi_duration','koi_prad','koi_srad',
+'flux_mean','flux_std','flux_min','flux_max','radius_ratio','duration_ratio','flux_range','flux_std_norm']
+X = merged_df[feature_cols]
+y = merged_df['label']
+
+
+# Optional: scale features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+
+# Save final dataset
+os.makedirs("data/processed", exist_ok=True)
+merged_df.to_csv("data/processed/preprocessed_features.csv", index=False)
+print("Preprocessed feature dataset saved to data/processed/preprocessed_features.csv")
