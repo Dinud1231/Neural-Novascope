@@ -1,0 +1,84 @@
+# ======================================
+# ExoMind AI - NASA Space Apps Project
+# Python + AI + Docker Git Ignore Rules
+# ======================================
+
+# --- Python cache & build files ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+build/
+dist/
+
+# --- Virtual environments ---
+.env
+.venv/
+venv/
+env/
+ENV/
+
+# --- Jupyter / notebooks ---
+.ipynb_checkpoints/
+
+# --- Data files ---
+*.csv
+*.json
+*.xlsx
+*.xls
+*.db
+*.sqlite3
+*.pickle
+*.pkl
+*.h5
+*.zip
+*.tar
+*.gz
+
+# --- Logs ---
+*.log
+logs/
+nohup.out
+
+# --- OS / editor files ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# --- Docker ---
+docker-compose.override.yml
+.dockerignore
+*.pid
+
+# --- Model files / large binaries ---
+*.pt
+*.pth
+*.onnx
+*.pb
+*.hdf5
+*.tflite
+
+# --- Node / web UI files (if any frontend) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Temporary or test files ---
+tmp/
+temp/
+test_output/
+__results__/
+
+# --- Others ---
+*.pdf
+*.docx
+*.pptx
+*.rtf
+*.ipynb
+*.bak
