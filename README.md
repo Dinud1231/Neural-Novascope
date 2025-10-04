@@ -15,6 +15,7 @@ This project is developed as part of the *NASA International Space Apps Challeng
   📧 Email: muhammadtasveebkhan@gmail.com  
   
 •⁠  ⁠*Dinud Fernando* — Computer Science & Business Analytics
+
   Skills: Machine Learning, Data Cleaning, Model Evaluation, Deployment  
 
 •⁠  ⁠*Divash Tuladhar* — Computer Science & Business Analytics  
